@@ -1,0 +1,35 @@
+* SPICE Netlist for a 6T SRAM Cell Analysis
+* By Shiwank Gupta
+
+.SUBCKT sram_cell VDD VSS BL BLB WL Q QB
+* Inverter 1 (Left)
+M1 QB Q VDD VDD pmos w=Wp l=Lp
+M2 QB Q VSS VSS nmos w=Wn l=Ln
+* Inverter 2 (Right)
+M3 Q QB VDD VDD pmos w=Wp l=Lp
+M4 Q QB VSS VSS nmos w=Wn l=Ln
+* Access Transistors
+M5 BL WL Q VSS nmos w=Wa l=La
+M6 BLB WL QB VSS nmos w=Wa l=La
+.ENDS sram_cell
+
+* Main Circuit for Simulation
+.INCLUDE '180nm_models.pm' * Include your technology model file
+
+.PARAM Wp=0.36u Wn=0.18u Wa=0.24u
+.PARAM Lp=0.18u Ln=0.18u La=0.18u
+
+VDD vdd 0 1.8V
+VSS vss 0 0V
+
+* Instantiate the SRAM cell
+Xsram vdd vss vbl vblb vwl vq vqb sram_cell
+
+* Voltage sources for control signals
+Vwl vwl 0 PULSE(0 1.8 1n 100p 100p 2n 5n)
+Vbl vbl 0 PWL(0 1.8 1n 1.8 1.1n 0 2n 0 2.1n 1.8)
+Vblb vblb 0 1.8V
+
+.TRAN 100p 10n
+.PRINT TRAN V(vq) V(vqb) V(vwl)
+.END
