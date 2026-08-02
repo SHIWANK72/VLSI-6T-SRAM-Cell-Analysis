@@ -24,3 +24,4 @@ Extensive **SPICE simulations** were performed to analyze the cell's performance
 
 ## Key Learnings
 This project provided a deep, practical understanding of memory cell design, the challenges of transistor sizing, and the use of SPICE simulations to quantitatively analyze and validate a VLSI design.
+CONTACT : gupta.shiwank09@gmail.com 
